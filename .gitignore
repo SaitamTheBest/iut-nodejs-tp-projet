@@ -1,2 +1,3 @@
-/iut-project/node_modules/
 .idea
+node_modules/
+iut-project/.env
