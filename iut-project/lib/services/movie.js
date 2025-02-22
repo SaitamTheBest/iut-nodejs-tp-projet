@@ -1,7 +1,7 @@
 'use strict';
 
 const { Service } = require("@hapipal/schmervice");
-const {Boom} = require("@hapi/boom");
+const Boom = require('@hapi/boom');
 
 module.exports = class MovieService extends Service {
     createMovie(movie) {
@@ -18,3 +18,4 @@ module.exports = class MovieService extends Service {
         const { Movie } = this.server.models();
         return Movie.query().findById(id).patch(movie);
     }
+}

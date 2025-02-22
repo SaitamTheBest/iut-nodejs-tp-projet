@@ -1,22 +1,19 @@
-// lib/models/movie.js
 'use strict';
 
 const Joi = require('joi');
 const { Model } = require('@hapipal/schwifty');
 
-module.exports = class Movie extends Model {
+module.exports = class FavoriteMovies extends Model {
 
     static get tableName() {
-        return 'movies';
+        return 'favorite_movies';
     }
 
     static get joiSchema() {
         return Joi.object({
             id: Joi.number().integer().greater(0),
-            title: Joi.string().min(1).required(),
-            description: Joi.string().required(),
-            releaseDate: Joi.date().required(),
-            director: Joi.string().required(),
+            userId: Joi.number().integer().greater(0).required(),
+            movieId: Joi.number().integer().greater(0).required(),
             createdAt: Joi.date(),
             updatedAt: Joi.date()
         });

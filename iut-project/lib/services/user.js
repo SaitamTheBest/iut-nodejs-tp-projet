@@ -3,7 +3,7 @@
 const { Service } = require('@hapipal/schmervice');
 const Boom = require('@hapi/boom');
 const Jwt = require('@hapi/jwt');
-const MailService = require('./mailService');
+const MailService = require('./mail_service');
 
 module.exports = class UserService extends Service {
 
@@ -48,6 +48,7 @@ module.exports = class UserService extends Service {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                id: user.id,
                 scope: user.roles
             },
             {
