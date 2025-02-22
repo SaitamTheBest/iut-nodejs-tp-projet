@@ -3,49 +3,45 @@
 const { Service } = require('@hapipal/schmervice');
 const Boom = require('@hapi/boom');
 const Jwt = require('@hapi/jwt');
-
+const MailService = require('./mailService');
 
 module.exports = class UserService extends Service {
 
-    create(user){
-
+    async create(user) {
         const { User } = this.server.models();
+        const newUser = await User.query().insertAndFetch(user);
 
-        return User.query().insertAndFetch(user);
+        // Send welcome email
+        const mailService = new MailService();
+        await mailService.sendWelcomeEmail(newUser.email, newUser.firstName);
+
+        return newUser;
     }
 
-    findAll(){
-
+    findAll() {
         const { User } = this.server.models();
-
         return User.query();
     }
 
-    delete(id){
-
+    delete(id) {
         const { User } = this.server.models();
-
         return User.query().deleteById(id);
     }
 
-    update(id, user){
-
+    update(id, user) {
         const { User } = this.server.models();
-
         return User.query().findById(id).patch(user);
     }
 
     async login(email, password) {
-
         const { User } = this.server.models();
-
         const user = await User.query().findOne({ email, password });
 
         if (!user) {
             throw Boom.unauthorized('Invalid credentials');
         }
 
-        const token = Jwt.token.generate(
+        return Jwt.token.generate(
             {
                 aud: 'urn:audience:iut',
                 iss: 'urn:issuer:iut',
@@ -55,14 +51,12 @@ module.exports = class UserService extends Service {
                 scope: user.roles
             },
             {
-                key: 'random_string', // La clé qui est définit dans lib/auth/strategies/jwt.js
+                key: 'random_string',
                 algorithm: 'HS512'
             },
             {
-                ttlSec: 14400 // 4 hours
+                ttlSec: 14400
             }
         );
-
-        return token;
     }
-}
+};
