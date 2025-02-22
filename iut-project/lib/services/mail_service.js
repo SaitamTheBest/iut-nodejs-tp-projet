@@ -39,4 +39,16 @@ module.exports = class MailService {
 
         await this.transporter.sendMail(mailOptions);
     }
+
+    async sendMovieUpdatedEmail(to, newTitle, oldTitle) {
+        const mailOptions = {
+            from: process.env.SMTP_USER,
+            to: to,
+            subject: 'Movie Updated',
+            text: `Hello,\n\nOne of your favorite movie "${oldTitle}" has been updated.Now if you are going to see this new data you need to search for the movie named:"${newTitle}".\n
+                    \nBest regards,\nThe Team`
+        };
+
+        await this.transporter.sendMail(mailOptions);
+    }
 };

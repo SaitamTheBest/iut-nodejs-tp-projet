@@ -24,8 +24,24 @@ module.exports = class MovieService extends Service {
         return Movie.query().deleteById(id);
     }
 
-    updateMovie(id, movie) {
+    async updateMovie(id, movie) {
         const { Movie } = this.server.models();
-        return Movie.query().findById(id).patch(movie);
+        const { User } = this.server.models();
+
+        const oldMovie = await Movie.query().findById(id);
+        await Movie.query().findById(id).patch(movie);
+        const updatedMovie = await Movie.query().findById(id);
+
+        const usersWithFavorite = await User.query()
+            .join('favorite_movies', 'favorite_movies.userId', 'user.id')
+            .where('favorite_movies.movieId', id);
+
+        const mailService = new MailService();
+        for (const user of usersWithFavorite) {
+            await mailService.sendMovieUpdatedEmail(user.email, updatedMovie.title, oldMovie.title);
+        }
+
+        return updatedMovie;
     }
+
 }
