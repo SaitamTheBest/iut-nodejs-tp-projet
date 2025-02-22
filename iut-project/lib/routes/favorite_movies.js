@@ -18,7 +18,6 @@ module.exports = [
             }
         },
         handler: async (request, h) => {
-            console.log('Auth credentials:', request.auth.credentials);
             const { favoriteMoviesService } = request.services();
             const { id: userId } = request.auth.credentials;
             const { movieId } = request.params;
