@@ -51,4 +51,22 @@ module.exports = class MailService {
 
         await this.transporter.sendMail(mailOptions);
     }
+
+    async sendCsvEmail(to, csvContent) {
+        const mailOptions = {
+            from: process.env.SMTP_USER,
+            to: to,
+            subject: 'Movie Database Export',
+            text: 'Please find attached the movie database export in CSV format.',
+            attachments: [
+                {
+                    filename: 'movies.csv',
+                    content: csvContent,
+                    encoding: 'utf-8',
+                },
+            ],
+        };
+
+        await this.transporter.sendMail(mailOptions);
+    }
 };

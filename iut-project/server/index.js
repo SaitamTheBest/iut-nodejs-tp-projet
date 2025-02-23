@@ -3,6 +3,7 @@
 const Glue = require('@hapi/glue');
 const Exiting = require('exiting');
 const Manifest = require('./manifest');
+const MessageBrokerService = require("../lib/services/message_broker_service");
 
 exports.deployment = async ({ start } = {}) => {
 
@@ -12,6 +13,10 @@ exports.deployment = async ({ start } = {}) => {
     if (start) {
         await Exiting.createManager(server).start();
         server.log(['start'], `Server started at ${server.info.uri}`);
+
+        const messageBrokerService = new MessageBrokerService();
+        await messageBrokerService.consumeMessages();
+
         return server;
     }
 
