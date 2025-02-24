@@ -64,7 +64,7 @@ Créer un utilisateur administrateur (vous pouvez changer le nom du compte et le
 Démarrer le projet
 
 > [!CAUTION]
-> N'oubliez pas d'ajouter les variables d'environnement, auquel cas le projet ne marchera pas correctement, [Cliquez ici pour en savoir plus](https://github.com/SaitamTheBest/iut-nodejs-tp-projet/new/main?filename=README.md#variables-denvironnement). 
+> N'oubliez pas d'ajouter les variables d'environnement, auquel cas le projet ne marchera pas correctement, [Cliquez ici pour en savoir plus](https://github.com/SaitamTheBest/iut-nodejs-tp-projet?tab=readme-ov-file#variables-denvironnement). 
 
 ```bash
   npm start
